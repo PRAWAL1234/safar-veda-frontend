@@ -16,10 +16,13 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { PortalHost } from '@rn-primitives/portal';
+
 import SplashScreen from './src/components/SplashScreen';
 import OnboardingScreen from './src/pages/Onboarding';
 import LoginPage from './src/pages/Auth/Login';
-import MainLayout from './src/pages/layout/MainLayout';
+import RootNavigator from './src/pages/layout/MainLayout';
 
 export type AppScreen = 'splash' | 'onboarding' | 'login' | 'main';
 
@@ -65,7 +68,7 @@ function App() {
         );
 
       case 'main':
-        return <MainLayout onLogout={() => setCurrentScreen('login')} />;
+        return <RootNavigator onLogout={() => setCurrentScreen('login')} />;
 
       default:
         return null;
@@ -76,7 +79,8 @@ function App() {
     <SafeAreaProvider style={{ flex: 1 }}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <QueryClientProvider client={queryClient}>
-        {renderCurrentScreen()}
+        <NavigationContainer>{renderCurrentScreen()}</NavigationContainer>
+        <PortalHost />
       </QueryClientProvider>
     </SafeAreaProvider>
   );
